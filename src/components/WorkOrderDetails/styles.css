@@ -1,0 +1,28 @@
+.modal-background {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  left: 0;
+  background-color: rgba(189, 195, 199, .73);
+}
+.modal-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.modal {
+  padding: 30px;
+  width: 45em;
+  background-color: white;
+  border: 1px solid #CCC;
+  box-shadow: 3px 3px 30px 3px #CCC;
+  overflow-y: auto;
+  height: 30rem;
+}
+
+.modal button {
+  float: right;
+}
