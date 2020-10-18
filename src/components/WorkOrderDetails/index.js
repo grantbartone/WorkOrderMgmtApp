@@ -60,9 +60,9 @@ export default function WorkOrderDetails({ handleCloseDetails }) {
   }
 
   return (
-    <div className="modal-background">
+    <div className="modal-background" onClick={handleCloseDetails}>
       <div className="modal-container">
-          <div className="modal">
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
           <button onClick={handleCloseDetails}>X</button>
           <h2>Work Order ID: {workOrderId}</h2>
           <div>Due Date: {moment(item.dueDate).format('LLL')}</div>

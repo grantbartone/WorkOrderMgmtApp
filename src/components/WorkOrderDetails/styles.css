@@ -25,4 +25,5 @@
 
 .modal button {
   float: right;
+  cursor: pointer;
 }
