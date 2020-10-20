@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Switch,
   Route,
@@ -6,15 +6,25 @@ import {
   useHistory,
 } from "react-router-dom";
 import moment from 'moment';
-import _ from 'lodash'
-import { data } from '../../stubs/workOrders.json';
+import _ from 'lodash';
+import workOrdersData from '../../stubs/workOrders.json';
 import { showStatus } from '../../common.js';
 import WorkOrderDetails from '../WorkOrderDetails/';
-import './styles.css'
+import './styles.css';
 
 export default function WorkOrders() {
   const match = useRouteMatch();
   const history = useHistory();
+  const [ isLoading, setIsLoading ] = useState(true);
+  const [ data, setData ] = useState({});
+
+  useEffect(() => {
+    // Similate fetching the data remotely with a setTimeout
+    setTimeout(() => {
+      setData(workOrdersData.data)
+      setIsLoading(false)
+    }, 3000);
+  }, []);
 
   const handleWorkOrderClick = (id) => {
     history.push(`/work-orders/${id}`);
@@ -25,9 +35,13 @@ export default function WorkOrders() {
   }
 
   const renderWorkOrders = () => {
-    if (_.isEmpty(data, 'workOrders')) return (
-      <div className="data-status">No Work Orders Exist</div>
-    );
+    if (_.isEmpty(data, 'workOrders')) {
+      return isLoading ? (
+        <div className="data-status">Fetching Data...</div>
+      ) : (
+        <div className="data-status">No Work Orders Exist</div>
+      );
+    }
     
     return (
       <div className="table">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from './App';
 import { createMemoryHistory } from 'history';
@@ -44,20 +44,27 @@ test('navigate to all pages in the app', () => {
   expect(screen.getByRole('heading', { name: /work orders/i })).toBeInTheDocument();
 });
 
-test('renders each Work Order Details modal in the table without crashing', () => {
+test('renders each Work Order Details modal in the table without crashing', async () => {
   render(
     <Router history={history}>
       <App />
     </Router>
   );
-  
-  const workOrderRows = screen.getAllByTestId('work-order-row')
-  expect(workOrderRows.length).toBeGreaterThan(0)
-  
-  for (const row of workOrderRows) {
-    userEvent.click(row);
-    expect(screen.getByRole('heading', { name: /work order id:/i }))
-    expect(screen.getByText(/description:/i))
-    userEvent.click(screen.getByRole('button', { name: /x/i }))
-  }
+
+  // Check the the "Fetching Data..." appears while fetching initially
+  expect(screen.getByText(/fetching data.../i)).toBeInTheDocument();
+
+  // Then check that the table renders with data and loop through all Details modals
+  await waitForElementToBeRemoved(() => screen.getByText(/fetching data.../i), { timeout: 4000 })
+    .then(() => {
+      const workOrderRows = screen.getAllByTestId('work-order-row')
+      expect(workOrderRows.length).toBeGreaterThan(0)
+
+      for (const row of workOrderRows) {
+        userEvent.click(row);
+        expect(screen.getByRole('heading', { name: /work order id:/i }))
+        expect(screen.getByText(/description:/i))
+        userEvent.click(screen.getByRole('button', { name: /x/i }))
+      }
+    });
 });
