@@ -64,7 +64,7 @@ export default function WorkOrders() {
       {renderWorkOrders()}
       <Switch>
         <Route path={`${match.path}/:workOrderId`}>
-          <WorkOrderDetails handleCloseDetails={handleCloseDetails} />
+          <WorkOrderDetails data={data} handleCloseDetails={handleCloseDetails} />
         </Route>
       </Switch>
     </div>

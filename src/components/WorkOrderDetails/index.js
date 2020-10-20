@@ -2,11 +2,10 @@ import React from 'react'
 import moment from 'moment';
 import _ from 'lodash';
 import { useParams } from "react-router-dom";
-import { data } from '../../stubs/workOrders.json';
 import { showStatus } from '../../common.js';
 import './styles.css'
 
-export default function WorkOrderDetails({ handleCloseDetails }) {
+export default function WorkOrderDetails({ data, handleCloseDetails }) {
   const { workOrderId } = useParams();
   const item = data.workOrders.find((a) => a.id === workOrderId);
 
